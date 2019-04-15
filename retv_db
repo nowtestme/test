@@ -1,0 +1,15 @@
+#include<stdio.h>
+#include<unistd.h>
+#include<fcntl.h>
+#include<sys/stat.h>
+int main(int argc, char *argv[])
+{
+int fd1;
+int n;
+char buf[10];
+if((fd1=open(argv[1], O_RDONLY))==-1)
+perror("Error..");
+while((n= read(fd1, buf, 1)) > 0)
+write(1, buf,n);
+close (fd1);
+}

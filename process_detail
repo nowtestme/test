@@ -1,0 +1,22 @@
+#include<iostream>
+using namespace std;
+#include<stdlib.h>
+#include<stdio.h>
+#include<fcntl.h>
+#include<sys/stat.h>
+#include<sys/types.h>
+
+int main(int argc,char *argv[])
+{
+	int fd;
+	struct flock f;
+	fd=open(argv[1],O_RDONLY);
+	while(fcntl(fd,F_GETLK,&f)!=-1 && f.l_type!=F_UNLCK)
+	{
+		cout<<argv[1]<<" Locked by "<<f.l_pid<<" from "<<f.l_start<<" for "<<f.l_len<<" bytes of "<<(f.l_type==F_WRLCK ? 'w' : 'r')<<endl;
+		if(!f.l_len) break;
+		f.l_start+=f.l_len;
+		f.l_len=0;
+	}
+
+	}

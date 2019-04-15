@@ -1,0 +1,17 @@
+#include<stdio.h>
+#include<unistd.h>
+#include<fcntl.h>
+#include<sys/stat.h>
+int main(int argc, char *argv[])
+{
+int fd1, fd2; //fd1- Source file , fd2- Destination file
+int n;
+char buf[10];
+fd1= open(argv[1], O_RDONLY);
+fd2= open(argv[2], O_WRONLY | O_CREAT | O_TRUNC ,
+S_IRUSR | S_IWUSR |S_IRGRP | S_IWGRP |S_IROTH);
+while((n = read(fd1, buf, 10))>0)
+	write(fd2, buf,n);
+close (fd1);
+close (fd2);
+}

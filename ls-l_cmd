@@ -1,0 +1,59 @@
+#include <iostream.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <pwd.h>
+#include <grp.h>
+char xtbl[10] = "rwxrwxrwx";
+void display_file_type ( int st_mode )
+{
+switch (st_mode & S_IFMT)
+{
+case S_IFDIR:
+cout << 'd'; return;
+case S_IFCHR:
+cout << 'c'; return;
+case S_IFBLK:
+cout << 'b'; return;
+case S_IFREG:
+cout << '-'; return;
+case S_IFLNK:
+cout << 'l'; return;
+case S_IFIFO:
+cout << 'p'; return;
+}
+}
+
+void display_access_perm ( int st_mode )
+{
+char amode[10];
+for (int i=0, j= (1 << 8); i < 9; i++, j>>=1)
+amode[i] = (st_mode&j) ? xtbl[i] : '-';
+cout << amode << ' ';
+}
+
+void long_list ( char path_name[20])
+{
+struct stat statv;
+struct group *gr_p;
+struct passwd *pw_p;
+if (stat(path_name,&statv))
+{
+perror( path_name );
+return;
+}
+display_file_type( statv.st_mode );
+display_access_perm( statv.st_mode );
+cout << statv.st_nlink;
+gr_p = getgrgid(statv.st_gid);
+pw_p = getpwuid(statv.st_uid);
+cout << “ “ << pw_p->pw_name << “ “ << gr_p->gr_name << “ “;
+cout << statv.st_size; 
+cout << “ “ << ctime(&statv.st_mtime);
+cout << “ “ << path_name << endl;
+}
+int main (int argc, char* argv[])
+{
+long_list( argv[1]);
+return 0;
+}

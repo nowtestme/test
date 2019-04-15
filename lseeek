@@ -1,0 +1,31 @@
+#include <sys/types.h>
+#include <string.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+int main(void)
+{
+int filedes;
+char msg1[] = "Hello";
+char msg2[] = "World";
+char ch;
+fflush(stdin);
+fflush(stdout);
+filedes = open("TEST.DAT",O_RDWR|O_TRUNC);
+
+lseek(filedes, 0L, SEEK_SET);
+write(filedes, msg1, strlen(msg1));
+
+lseek(filedes, 20L, SEEK_END);
+write(filedes, msg2, strlen(msg2));
+
+lseek(filedes, 0L, SEEK_SET);
+
+while(!eof(filedes))
+{
+read(filedes, &ch, 1);
+printf("%c", ch);
+}
+close(filedes);
+return 0;
+}

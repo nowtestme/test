@@ -1,0 +1,12 @@
+#include <iostream.h>
+#include <sys/types.h>
+#include <fcntl.h>
+#include <unistd.h>
+int main(int argc, char *argv[])
+{
+if (access(argv[1], R_OK) < 0)
+perror("access error");
+else
+printf("read access OK\n");
+return 0;
+}

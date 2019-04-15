@@ -1,0 +1,22 @@
+#include <sys/types.h>  
+#include <utime.h> 
+#include <stdlib.h>
+#include <errno.h>
+#include <stdio.h>
+
+int main(int argc, char *argv[]) {
+
+  struct utimbuf utimeStruct;
+
+
+  utimeStruct.actime  = 0;
+  utimeStruct.modtime = 0;
+ /*use  the values on a file
+	int utime(const char *path, struct utimbuf *times);
+	struct utimbuf {
+	time_t actime; / * access time */
+	time_t modtime; /* modification time */
+	}
+ */
+}
+

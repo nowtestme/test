@@ -1,0 +1,18 @@
+#include <iostream.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+int main(void)
+{
+struct stat statv;
+if (stat("abc.c", &statv) < 0)
+perror("stat error for abc.c");
+printf("Original Permissions..");
+system ("ls -l abc.c");
+
+if (chmod("abc.c", S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH) < 0)
+perror("chmod error for abc.c");
+printf("Permissions after chmod..");
+system ("ls -l abc.c");
+exit(0);
+}

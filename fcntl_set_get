@@ -1,0 +1,35 @@
+#include<iostream>
+using namespace std;
+#include<stdlib.h>
+#include<stdio.h>
+#include<fcntl.h>
+#include<sys/stat.h>
+#include<sys/types.h>
+
+int main(int argc,char *argv[])
+{
+	struct flock f1;
+	int fd;
+	if((fd=open(argv[1],O_RDWR))==-1)
+	{
+	perror("Open");
+	}
+	f1.l_type=F_WRLCK;
+	f1.l_whence=SEEK_SET;
+	f1.l_start=0;
+	f1.l_len=0;
+
+	if(fcntl(fd,F_SETLK,&f1)==-1)
+	{
+	perror("open");
+	exit(0);
+	}
+	cout<<"\n Lock set \n";
+
+	if(fcntl(fd,F_GETLK,&f1)==-1)
+	{
+	perror("open");
+	exit(0);
+	}
+	cout<<argv[1]<<" Locked by "<<f1.l_pid<<" from "<<f1.l_start<<" for "<<f1.l_len<<" bytes of "<<(f1.l_type==F_WRLCK ? 'w' : 'r')<<endl;
+}
